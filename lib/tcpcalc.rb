@@ -1,4 +1,5 @@
 require "tcpcalc/version"
+require 'tcpcalc/state'
 require 'tcpcalc/handler'
 require 'socket'
 
@@ -13,6 +14,7 @@ module TCPCalc
 
     def initialize(port)
       @port = port
+      @state = State.new
       @server = nil
     end
 
@@ -20,7 +22,7 @@ module TCPCalc
       @server = TCPServer.new(port)
       loop do
         Thread.start(@server.accept) do |client|
-          handled_client = Handler.new(client)
+          handled_client = Handler.new(client,@state)
           handled_client.process!
         end
       end
@@ -32,5 +34,3 @@ module TCPCalc
     end
   end
 end
-
-

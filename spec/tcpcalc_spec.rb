@@ -13,12 +13,16 @@ describe "TCPCalc", :acceptance do
     Thread.kill(@server_thread) if @server_thread
   end
 
+  def is_numeric?(s)
+    !!Float(s) rescue false
+  end
+
   it 'responds with a number' do
     s = client
     s.write("GET\r\n")
     response = s.gets
     s.close
-    expect(response).to match(/[0-9]\n/)
+    expect(true).to eq(is_numeric?(response))
   end
 
   it 'adds n to a number when sending the add command' do
@@ -30,6 +34,8 @@ describe "TCPCalc", :acceptance do
     s.write("GET\r\n")
     second_num = s.gets
     s.close
+    expect(true).to eq(is_numeric?(first_num))
+    expect(true).to eq(is_numeric?(second_num))
     expect(first_num.to_i+1).to eq(second_num.to_i)
   end
 
@@ -42,6 +48,8 @@ describe "TCPCalc", :acceptance do
     s.write("GET\r\n")
     second_num = s.gets
     s.close
+    expect(true).to eq(is_numeric?(first_num))
+    expect(true).to eq(is_numeric?(second_num))
     expect(first_num.to_i-1).to eq(second_num.to_i)
   end
 
@@ -70,6 +78,22 @@ describe "TCPCalc", :acceptance do
   it 'responds with invalid command when sent any other command' do
     s = client
     s.write("INVALID\r\n")
+    response = s.gets
+    s.close
+    expect(response).to eq("invalid command\n")
+  end
+
+  it 'responds with invalid command when adding a non-numeric value' do
+    s = client
+    s.write("ADD S\r\n")
+    response = s.gets
+    s.close
+    expect(response).to eq("invalid command\n")
+  end
+
+  it 'responds with invalid command when subtracting a non-numeric value' do
+    s = client
+    s.write("SUBTRACT S\r\n")
     response = s.gets
     s.close
     expect(response).to eq("invalid command\n")
