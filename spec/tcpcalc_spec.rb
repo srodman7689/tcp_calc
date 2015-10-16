@@ -1,29 +1,47 @@
 require 'spec_helper'
 
-describe TCPCalc do
-  before(:each) do
-    @tcpcalc = TCPCalc.new
+describe "TCPCalc", :acceptance do 
+  it 'responds with ok' do
+    with_server do
+      s = client()
+      response = s.gets()
+      s.close()
+      expect(response).to eq("ok\n")
+    end
   end
 
-  it 'has a version number' do
-    expect(TCPCalc::VERSION).not_to be nil
+  def client
+    TCPSocket.new('localhost', TCPCalc::PORT)
   end
 
-  it 'starts when told to start' do
-    started = @tcpcalc.start()
-    expect(started).to eq(true)
+  def with_server
+    server_thread = Thread.new do
+      server = TCPCalc::Server.new(TCPCalc::PORT)
+      server.listen
+    end
+
+    wait_for_open_port TCPCalc::PORT
+    yield
+  ensure
+    Thread.kill(server_thread) if server_thread
   end
 
-  it 'starts on default port when not given one' do
-    @tcpcalc.start()
-    port_num = @tcpcalc.port
-    expect(port_num).to eq(TCPCalc::DEFAULT_PORT)
+  def wait_for_open_port(port)
+    time = Time.now
+    while !check_port(port) && 1 > Time.now - time
+      sleep 0.01
+    end
+
+    raise TimeoutError unless check_port(port)
   end
 
-  it 'starts on a specific port when given one' do
-    expected_port = 4567
-    @tcpcalc.start(expected_port)
-    port_num = @tcpcalc.port
-    expect(port_num).to eq(expected_port)
+  def check_port(port)
+    begin
+      s = client
+      s.close
+      return true
+    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+      return false
+    end
   end
 end
