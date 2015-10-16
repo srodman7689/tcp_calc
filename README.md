@@ -9,7 +9,7 @@ This is TCPCalc the TCP Server Calculator.
 
 The default port for tcpcalc is 6789. To run the tcpcalc on a specific port run
 
-    bundle exec bin/tcpcalc PORT
+    bin/tcpcalc PORT
 
 Where PORT is the port number you want to start the server on.
 
