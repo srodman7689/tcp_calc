@@ -14,7 +14,7 @@ describe "TCPCalc", :acceptance do
   end
 
   def is_numeric?(s)
-    !!Float(s) rescue false
+    !!Integer(s) rescue false
   end
 
   it 'responds with a number' do
@@ -94,6 +94,22 @@ describe "TCPCalc", :acceptance do
   it 'responds with invalid command when subtracting a non-numeric value' do
     s = client
     s.write("SUBTRACT S\r\n")
+    response = s.gets
+    s.close
+    expect(response).to eq("invalid command\n")
+  end
+
+  it 'responds with invalid command when adding a float' do
+    s = client
+    s.write("ADD 1.1\r\n")
+    response = s.gets
+    s.close
+    expect(response).to eq("invalid command\n")
+  end
+
+  it 'responds with invalid command when subtracting a float' do
+    s = client
+    s.write("SUBTRACT 1.1\r\n")
     response = s.gets
     s.close
     expect(response).to eq("invalid command\n")

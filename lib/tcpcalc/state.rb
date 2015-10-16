@@ -23,7 +23,7 @@ module TCPCalc
     end
 
     def is_numeric?(s)
-      !!Float(s) rescue false
+      !!Integer(s) rescue false
     end
 
     def add(arg,id)

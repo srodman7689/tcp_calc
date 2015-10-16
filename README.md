@@ -23,11 +23,11 @@ This command will return your number.
 
     ADD n
 
-Where n is a number to add to your number. responds with 'ok\n' on success.
+Where n is an integer to add to your number. responds with 'ok\n' on success.
 
     SUBTRACT n
 
-Where n is a number to subtract from your number. response with 'ok\n' on success.
+Where n is an integer to subtract from your number. response with 'ok\n' on success.
 
     EXIT
 
