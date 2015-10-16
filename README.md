@@ -5,13 +5,13 @@ This is TCPCalc the TCP Server Calculator.
 ## Usage
 
     bundle install
-    bundle exec bin/tcpcalc
+    bin/tcpcalc
 
 to run the tcpcalc on a specific port run
 
-    bundle exec bin/tcpcalc -p PORT
+    bundle exec bin/tcpcalc PORT
 
-where port is the port number you want to start the server on.
+where PORT is the port number you want to start the server on.
 
 
 
