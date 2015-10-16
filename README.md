@@ -11,9 +11,27 @@ The default port for tcpcalc is 6789. To run the tcpcalc on a specific port run
 
     bundle exec bin/tcpcalc PORT
 
-where PORT is the port number you want to start the server on.
+Where PORT is the port number you want to start the server on.
 
+Once the server is running. You can connect to it with telnet or any other tcp client.
 
+## Protocol
+
+    GET
+
+This command will return your number.
+
+    ADD n
+
+Where n is a number to add to your number. responds with 'ok\n' on success.
+
+    SUBTRACT n
+
+Where n is a number to subtract from your number. response with 'ok\n' on success.
+
+    EXIT
+
+Closes your connection to the server.
 
 ## Development
 
