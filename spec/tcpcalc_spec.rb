@@ -30,7 +30,7 @@ describe "TCPCalc", :acceptance do
     s.write("GET\r\n")
     second_num = s.gets
     s.close
-    pass = expect(first_num.to_i+1).to eq(second_num.to_i)
+    expect(first_num.to_i+1).to eq(second_num.to_i)
   end
 
   it 'subtracts n from a number when sending the subtract command' do
@@ -43,7 +43,6 @@ describe "TCPCalc", :acceptance do
     second_num = s.gets
     s.close
     expect(first_num.to_i-1).to eq(second_num.to_i)
-
   end
 
   it 'allows multiple simultaneous connections' do
